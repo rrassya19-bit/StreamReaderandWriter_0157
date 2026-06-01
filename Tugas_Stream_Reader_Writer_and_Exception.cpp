@@ -190,3 +190,32 @@ void updateBarang()
     simpanGudang(daftar);
     cout << "Barang berhasil diupdate!" << endl;
 }
+
+// DELETE: Menghapus data barang dari file berdasarkan ID
+void deleteBarang() 
+{
+    vector<Barang> daftar = bacaGudang();
+    if (daftar.empty()) 
+    {
+        cout << "Gudang masih kosong, tidak ada data yang bisa dihapus!" << endl;
+        return;
+    }
+
+    readBarang();
+    int id;
+    cout << "Masukkan ID barang yang akan dihapus: ";
+    cin >> id;
+    cin.ignore();
+
+    auto it = find_if(daftar.begin(), daftar.end(), [id](const Barang& b) { return b.id == id; });
+    if (it == daftar.end()) 
+    {
+        cout << "Barang dengan ID " << id << " tidak ditemukan!" << endl;
+        return;
+    }
+
+    string namaHapus = it->nama;
+    daftar.erase(it);
+    simpanGudang(daftar);
+    cout << "Barang \"" << namaHapus << "\" berhasil dihapus dari gudang!" << endl;
+}
