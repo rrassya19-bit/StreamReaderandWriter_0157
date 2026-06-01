@@ -8,14 +8,10 @@
 #include <array>
 using namespace std;
 
-// =============================================
-//          KELAS TOKO ELEKTRONIK (OOP)
-// =============================================
 class TokoElektronik 
 {
 private:
     array<string, 3> etalase;
-
 public:
     TokoElektronik() 
     {
@@ -23,13 +19,9 @@ public:
         etalase[1] = "Keyboard Mechanical";
         etalase[2] = "Mouse Wireless";
     }
-
     string ambilBarang(size_t nomorRak) 
     {
-        try 
-        {
-            return etalase.at(nomorRak);
-        } 
+        try { return etalase.at(nomorRak); } 
         catch (const out_of_range&) 
         {
             throw string("Gagal Mengambil Barang : Rak nomor " + to_string(nomorRak) + " kosong atau tidak tersedia!");
@@ -37,9 +29,6 @@ public:
     }
 };
 
-// =============================================
-//              STRUCT DATA BARANG
-// =============================================
 struct Barang 
 {
     int id;
@@ -48,9 +37,6 @@ struct Barang
     int stok;
 };
 
-// =============================================
-//               FUNGSI UTILITAS
-// =============================================
 string trim(const string& s) 
 {
     size_t start = s.find_first_not_of(" \t\r\n");
@@ -69,18 +55,11 @@ int nextId(const vector<Barang>& daftar)
     return maxId + 1;
 }
 
-// =============================================
-//              FUNGSI FILE I/O
-// =============================================
-
-// READ FILE: Membaca semua data dari gudang.txt ke vector
 vector<Barang> bacaGudang() 
 {
     vector<Barang> daftar;
     ifstream file("gudang.txt");
-
     if (!file.is_open()) return daftar;
-
     string line;
     while (getline(file, line)) 
     {
@@ -89,7 +68,6 @@ vector<Barang> bacaGudang()
         stringstream ss(line);
         Barang b;
         string token;
-
         try {
             if (!getline(ss, token, ',')) continue; b.id    = stoi(trim(token));
             if (!getline(ss, token, ',')) continue; b.nama  = trim(token);
@@ -102,7 +80,6 @@ vector<Barang> bacaGudang()
     return daftar;
 }
 
-// WRITE FILE: Menulis semua data dari vector ke gudang.txt
 void simpanGudang(const vector<Barang>& daftar) 
 {
     ofstream file("gudang.txt");
@@ -111,11 +88,37 @@ void simpanGudang(const vector<Barang>& daftar)
         cout << "Gagal membuka file gudang.txt untuk ditulis!\n";
         return;
     }
-
     for (const auto& b : daftar) 
     {
         file << b.id << "," << b.nama << "," << b.harga << "," << b.stok << "\n";
     }
-
     file.close();
+}
+
+// =============================================
+//                 FUNGSI CRUD
+// =============================================
+
+// READ: Menampilkan semua barang dalam format tabel rapi
+void readBarang() 
+{
+    vector<Barang> daftar = bacaGudang();
+
+    cout << "\n========================================" << endl;
+    cout << "      DAFTAR BARANG GUDANG GIBRAN JAYA  " << endl;
+    cout << "========================================" << endl;
+
+    if (daftar.empty()) 
+    {
+        cout << "  (Gudang masih kosong)" << endl;
+    } else 
+    {
+        printf("%-5s %-22s %-12s %-5s\n", "ID", "Nama Barang", "Harga", "Stok");
+        cout << "----------------------------------------" << endl;
+        for (const auto& b : daftar) 
+        {
+            printf("%-5d %-22s Rp%-10d %-5d\n", b.id, b.nama.c_str(), b.harga, b.stok);
+        }
+    }
+    cout << "========================================\n" << endl;
 }
