@@ -122,3 +122,26 @@ void readBarang()
     }
     cout << "========================================\n" << endl;
 }
+
+// CREATE: Menambahkan data barang baru ke dalam file
+void createBarang() 
+{
+    vector<Barang> daftar = bacaGudang();
+    Barang b;
+    b.id = nextId(daftar);
+
+    cout << "\n--- TAMBAH BARANG BARU ---" << endl;
+    cout << "Nama Barang : ";
+    getline(cin, b.nama);
+    if (b.nama.empty()) getline(cin, b.nama);
+
+    cout << "Harga       : Rp ";
+    cin >> b.harga;
+    cout << "Stok        : ";
+    cin >> b.stok;
+    cin.ignore();
+
+    daftar.push_back(b);
+    simpanGudang(daftar);
+    cout << "Barang berhasil ditambahkan dengan ID " << b.id << "!" << endl;
+}
