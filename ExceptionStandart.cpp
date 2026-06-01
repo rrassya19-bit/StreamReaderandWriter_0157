@@ -9,6 +9,7 @@ int main()
     try
     {
         array <int, 3> data = { 1, 2, 3 };
+        cout << data.at(5) << endl;
     }
     return 0;
 }
