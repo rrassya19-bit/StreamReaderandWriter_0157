@@ -5,6 +5,7 @@ using namespace std;
 
 int main()
 {
+    //deklarasi variabel baris untuk menyimpan data string
     string baris;
 
     //membuka file dalam mode menulis
@@ -27,5 +28,10 @@ int main()
     }
     //menutup file setelah penulisan selesai
     outfile.close();
+
+    //membuka file dalam mode membaca
+    ifstream infile;
+    //menunjuk ke sebuah file
+    infile.open("contohfile.txt");
     return 0;
 }
