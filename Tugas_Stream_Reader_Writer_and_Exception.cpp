@@ -43,6 +43,8 @@ public:
     }
 };
 
+
+
 // =============================================
 //              STRUCT DATA BARANG
 // =============================================
@@ -53,6 +55,8 @@ struct Barang
     int harga;
     int stok;
 };
+
+
 
 // =============================================
 //               FUNGSI UTILITAS
@@ -77,6 +81,8 @@ int nextId(const vector<Barang>& daftar)
     }
     return maxId + 1;
 }
+
+
 
 // =============================================
 //              FUNGSI FILE I/O
@@ -129,6 +135,8 @@ void simpanGudang(const vector<Barang>& daftar)
     file.close();
 }
 
+
+
 // =============================================
 //                 FUNGSI CRUD
 // =============================================
@@ -157,6 +165,7 @@ void readBarang()
     cout << "========================================\n" << endl;
 }
 
+
 // CREATE: Menambahkan data barang baru ke dalam file
 void createBarang() 
 {
@@ -179,6 +188,7 @@ void createBarang()
     simpanGudang(daftar);
     cout << "Barang berhasil ditambahkan dengan ID " << b.id << "!" << endl;
 }
+
 
 // UPDATE: Memperbarui data barang tertentu berdasarkan ID
 void updateBarang() 
@@ -225,6 +235,7 @@ void updateBarang()
     cout << "Barang berhasil diupdate!" << endl;
 }
 
+
 // DELETE: Menghapus data barang dari file berdasarkan ID
 void deleteBarang() 
 {
@@ -253,6 +264,9 @@ void deleteBarang()
     simpanGudang(daftar);
     cout << "Barang \"" << namaHapus << "\" berhasil dihapus dari gudang!" << endl;
 }
+
+
+
 
 // =============================================
 //     SIMULASI ETALASE (Exception Handling)
@@ -292,6 +306,8 @@ void simulasiEtalase() {
 
     cout << "============================================\n" << endl;
 }
+
+
 
 // =============================================
 //               FUNGSI MAIN
