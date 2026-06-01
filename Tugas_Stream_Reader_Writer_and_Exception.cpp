@@ -145,3 +145,48 @@ void createBarang()
     simpanGudang(daftar);
     cout << "Barang berhasil ditambahkan dengan ID " << b.id << "!" << endl;
 }
+
+// UPDATE: Memperbarui data barang tertentu berdasarkan ID
+void updateBarang() 
+{
+    vector<Barang> daftar = bacaGudang();
+    if (daftar.empty()) 
+    {
+        cout << "Gudang masih kosong, tidak ada data yang bisa diupdate!" << endl;
+        return;
+    }
+
+    readBarang();
+    int id;
+    cout << "Masukkan ID barang yang akan diupdate: ";
+    cin >> id;
+    cin.ignore();
+
+    auto it = find_if(daftar.begin(), daftar.end(), [id](const Barang& b) { return b.id == id; });
+    if (it == daftar.end()) 
+    {
+        cout << "Barang dengan ID " << id << " tidak ditemukan!" << endl;
+        return;
+    }
+
+    cout << "\n--- UPDATE DATA BARANG (ID: " << id << ") ---" << endl;
+
+    string input;
+    cout << "Nama Baru (Enter jika tidak diubah): ";
+    getline(cin, input);
+    if (!input.empty()) it->nama = input;
+
+    cout << "Harga Baru (0 jika tidak diubah)  : Rp ";
+    int hrg;
+    cin >> hrg;
+    if (hrg > 0) it->harga = hrg;
+
+    cout << "Stok Baru  (-1 jika tidak diubah) : ";
+    int stk;
+    cin >> stk;
+    if (stk >= 0) it->stok = stk;
+    cin.ignore();
+
+    simpanGudang(daftar);
+    cout << "Barang berhasil diupdate!" << endl;
+}
