@@ -51,8 +51,6 @@ struct Barang
 // =============================================
 //               FUNGSI UTILITAS
 // =============================================
-
-// Fungsi untuk membersihkan whitespace
 string trim(const string& s) 
 {
     size_t start = s.find_first_not_of(" \t\r\n");
@@ -61,7 +59,6 @@ string trim(const string& s)
     return s.substr(start, end - start + 1);
 }
 
-// Fungsi untuk mendapatkan ID berikutnya secara otomatis
 int nextId(const vector<Barang>& daftar) 
 {
     int maxId = 0;
@@ -70,4 +67,55 @@ int nextId(const vector<Barang>& daftar)
         if (b.id > maxId) maxId = b.id;
     }
     return maxId + 1;
+}
+
+// =============================================
+//              FUNGSI FILE I/O
+// =============================================
+
+// READ FILE: Membaca semua data dari gudang.txt ke vector
+vector<Barang> bacaGudang() 
+{
+    vector<Barang> daftar;
+    ifstream file("gudang.txt");
+
+    if (!file.is_open()) return daftar;
+
+    string line;
+    while (getline(file, line)) 
+    {
+        line = trim(line);
+        if (line.empty()) continue;
+        stringstream ss(line);
+        Barang b;
+        string token;
+
+        try {
+            if (!getline(ss, token, ',')) continue; b.id    = stoi(trim(token));
+            if (!getline(ss, token, ',')) continue; b.nama  = trim(token);
+            if (!getline(ss, token, ',')) continue; b.harga = stoi(trim(token));
+            if (!getline(ss, token, ',')) continue; b.stok  = stoi(trim(token));
+            daftar.push_back(b);
+        } catch (...) { continue; }
+    }
+    file.close();
+    return daftar;
+}
+
+// WRITE FILE: Menulis semua data dari vector ke gudang.txt
+void simpanGudang(const vector<Barang>& daftar) 
+{
+    ofstream file("gudang.txt");
+    if (!file.is_open()) 
+    {
+        cout << "Gagal membuka file gudang.txt untuk ditulis!\n";
+        return;
+    }
+
+    for (const auto& b : daftar) 
+    {
+        file << b.id << "," << b.nama << "," << b.harga << "," << b.stok << "\n";
+    }
+
+    file.close();
 }
