@@ -219,3 +219,41 @@ void deleteBarang()
     simpanGudang(daftar);
     cout << "Barang \"" << namaHapus << "\" berhasil dihapus dari gudang!" << endl;
 }
+
+// =============================================
+//     SIMULASI ETALASE (Exception Handling)
+// =============================================
+void simulasiEtalase() 
+{
+    TokoElektronik toko;
+
+    cout << "\n============================================" << endl;
+    cout << "       SIMULASI ETALASE GIBRAN JAYA         " << endl;
+    cout << "============================================" << endl;
+
+    // Skenario 1: Pengambilan barang di rak indeks ke-1 (Harus sukses)
+    cout << "\n[Skenario 1] Mengambil barang di rak indeks ke-1..." << endl;
+    try 
+    {
+        string barang = toko.ambilBarang(1);
+        cout << "Berhasil! Produk ditemukan : " << barang << endl;
+    } 
+    catch (const string& e) 
+    {
+        cout << "ERROR TERTANGKAP : " << e << endl;
+    }
+
+    // Skenario 2: Pengambilan barang di rak indeks ke-5 (Harus gagal)
+    cout << "\n[Skenario 2] Mengambil barang di rak indeks ke-5..." << endl;
+    try 
+    {
+        string barang = toko.ambilBarang(5);
+        cout << "Berhasil! Produk ditemukan : " << barang << endl;
+    } 
+    catch (const string& e) 
+    {
+        cout << "ERROR TERTANGKAP : " << e << endl;
+    }
+
+    cout << "============================================\n" << endl;
+}
