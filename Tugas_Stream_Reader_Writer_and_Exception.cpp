@@ -8,27 +8,44 @@
 #include <array>
 using namespace std;
 
+// =============================================
+//          KELAS TOKO ELEKTRONIK (OOP)
+// =============================================
 class TokoElektronik 
 {
 private:
+    // Atribut private: array berkapasitas 3 elemen (enkapsulasi)
     array<string, 3> etalase;
+
 public:
+    // Constructor: mengisi data awal ke dalam array secara otomatis
     TokoElektronik() 
     {
         etalase[0] = "Laptop ASUS ROG";
         etalase[1] = "Keyboard Mechanical";
         etalase[2] = "Mouse Wireless";
     }
+
+    // Method public: mengambil produk berdasarkan nomorRak
     string ambilBarang(size_t nomorRak) 
     {
-        try { return etalase.at(nomorRak); } 
+        try 
+        {
+            // Wajib menggunakan .at() saat mengakses indeks array
+            return etalase.at(nomorRak);
+        } 
+
         catch (const out_of_range&) 
         {
+            // Tangkap out_of_range lalu lempar ulang pesan kustom
             throw string("Gagal Mengambil Barang : Rak nomor " + to_string(nomorRak) + " kosong atau tidak tersedia!");
         }
     }
 };
 
+// =============================================
+//              STRUCT DATA BARANG
+// =============================================
 struct Barang 
 {
     int id;
@@ -37,6 +54,11 @@ struct Barang
     int stok;
 };
 
+// =============================================
+//               FUNGSI UTILITAS
+// =============================================
+
+// Fungsi untuk membersihkan whitespace
 string trim(const string& s) 
 {
     size_t start = s.find_first_not_of(" \t\r\n");
@@ -45,6 +67,7 @@ string trim(const string& s)
     return s.substr(start, end - start + 1);
 }
 
+// Fungsi untuk mendapatkan ID berikutnya secara otomatis
 int nextId(const vector<Barang>& daftar) 
 {
     int maxId = 0;
@@ -55,11 +78,18 @@ int nextId(const vector<Barang>& daftar)
     return maxId + 1;
 }
 
+// =============================================
+//              FUNGSI FILE I/O
+// =============================================
+
+// READ FILE: Membaca semua data dari gudang.txt ke vector
 vector<Barang> bacaGudang() 
 {
     vector<Barang> daftar;
     ifstream file("gudang.txt");
+
     if (!file.is_open()) return daftar;
+
     string line;
     while (getline(file, line)) 
     {
@@ -68,6 +98,7 @@ vector<Barang> bacaGudang()
         stringstream ss(line);
         Barang b;
         string token;
+
         try {
             if (!getline(ss, token, ',')) continue; b.id    = stoi(trim(token));
             if (!getline(ss, token, ',')) continue; b.nama  = trim(token);
@@ -80,6 +111,7 @@ vector<Barang> bacaGudang()
     return daftar;
 }
 
+// WRITE FILE: Menulis semua data dari vector ke gudang.txt
 void simpanGudang(const vector<Barang>& daftar) 
 {
     ofstream file("gudang.txt");
@@ -88,10 +120,12 @@ void simpanGudang(const vector<Barang>& daftar)
         cout << "Gagal membuka file gudang.txt untuk ditulis!\n";
         return;
     }
+
     for (const auto& b : daftar) 
     {
         file << b.id << "," << b.nama << "," << b.harga << "," << b.stok << "\n";
     }
+
     file.close();
 }
 
@@ -223,8 +257,7 @@ void deleteBarang()
 // =============================================
 //     SIMULASI ETALASE (Exception Handling)
 // =============================================
-void simulasiEtalase() 
-{
+void simulasiEtalase() {
     TokoElektronik toko;
 
     cout << "\n============================================" << endl;
@@ -238,6 +271,7 @@ void simulasiEtalase()
         string barang = toko.ambilBarang(1);
         cout << "Berhasil! Produk ditemukan : " << barang << endl;
     } 
+    
     catch (const string& e) 
     {
         cout << "ERROR TERTANGKAP : " << e << endl;
@@ -250,10 +284,69 @@ void simulasiEtalase()
         string barang = toko.ambilBarang(5);
         cout << "Berhasil! Produk ditemukan : " << barang << endl;
     } 
+
     catch (const string& e) 
     {
         cout << "ERROR TERTANGKAP : " << e << endl;
     }
 
     cout << "============================================\n" << endl;
+}
+
+// =============================================
+//               FUNGSI MAIN
+// =============================================
+int main() {
+    int pilihan;
+
+    cout << "============================================" << endl;
+    cout << "   SELAMAT DATANG DI TOKO ELEKTRONIK       " << endl;
+    cout << "          \"GIBRAN JAYA\"                    " << endl;
+    cout << "============================================" << endl;
+
+    // Looping menu utama menggunakan do-while
+    do {
+        // READ otomatis: Menampilkan daftar barang setiap kali menu dibuka
+        readBarang();
+
+        cout << "========== MENU UTAMA ==========" << endl;
+        cout << "1. Tambah Barang Baru  (Create)"  << endl;
+        cout << "2. Lihat Barang        (Read)"    << endl;
+        cout << "3. Update Data Barang  (Update)"  << endl;
+        cout << "4. Hapus Data Barang   (Delete)"  << endl;
+        cout << "5. Simulasi Etalase    (Exception)" << endl;
+        cout << "0. Keluar"                         << endl;
+        cout << "=================================" << endl;
+        cout << "Pilih menu (0-5): ";
+        cin >> pilihan;
+        cin.ignore();
+
+        switch (pilihan) 
+        {
+            case 1: 
+                createBarang();    
+                break;
+            case 2: 
+                readBarang();      
+                break;
+            case 3: 
+                updateBarang();    
+                break;
+            case 4: 
+                deleteBarang();    
+                break;
+            case 5: 
+                simulasiEtalase(); 
+                break;
+            case 0:
+                cout << "\nTerima kasih telah menggunakan sistem Toko Gibran Jaya!" << endl;
+                break;
+            default:
+                cout << "Pilihan tidak valid! Silakan pilih antara 0-5." << endl;
+                break;
+        }
+
+    } while (pilihan != 0);
+
+    return 0;
 }
